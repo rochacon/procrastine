@@ -1,0 +1,28 @@
+* {
+    margin: 0;
+}
+
+html {
+    background-color: black;
+}
+
+body {
+    width: 1000px;
+    margin: 0 auto;
+    font-family: monaco;
+    color: lime;
+    text-align: center;
+}
+
+a, a:visited {
+    color: lime;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    margin-top: 50px;
+}
+

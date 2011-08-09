@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>{% block title %}procrastine - save a thought, link, everything...{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+    </head>
+    <body>
+        {% block header %}
+        <h1>procrastine</h1>
+        <h2>leave something for later (idea, link, note, etc.)</h2>
+        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block footer %}
+        <h3>
+            powered by
+            <a href="https://www.djangoproject.com">Django</a>
+            and
+            <a href="https://ep.io">ep.io</a>
+        </h3>
+        {% endblock %}
+    </body>
+</html>
+
