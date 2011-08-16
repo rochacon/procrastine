@@ -10,7 +10,7 @@ class AccountTest(TestCase):
         Tests that a hash is created for the newly created user 
         """
         u = {'username': 'test', 'email': 'test@test.cc', 'password': 'test'}
-        u['key'] = ''.join(random.choice(string.letters + string.digits) for x in range(0,40))
         user = User.objects.create_user(**u)
         self.assertTrue(user.id is not None)
         self.assertTrue(40, len(user.get_profile().key)) # SHA-1 hash key
+
