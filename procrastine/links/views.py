@@ -57,7 +57,9 @@ def listing(request, only_active=None):
         
         if 'owner' in request.POST:
             links = Link.objects.filter(owner=request.POST.get('owner'), is_active=only_active)
-            response = list(links.values('id', 'url'))
+            response = {}
+            response['status'] = 200
+            response['urls'] = list(links.values('id', 'url'))
             return HttpResponseJSON(response)
         
         return HttpResponseJSON({'status': 500, 'message': 'Owner id not received'}) 
