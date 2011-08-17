@@ -4,8 +4,6 @@ from core.http import HttpResponseJSON
 from links.forms import LinkForm
 from links.models import Link
 
-# TODO criar decorator de autenticacao (cada usuario tera seu hash)
-
 def add(request):
     """
     Add new link view
@@ -15,13 +13,18 @@ def add(request):
         if form.is_valid():
             link = form.save()
             response = {}
+            response['status'] = 200
             response['message'] = 'Link added'
             response['link'] = {'id': link.id, 'url': link.url}
             return HttpResponseJSON(response)
-        
-        return HttpResponseServerError('An error occurred during the link save.')
+            
+        response = {}
+        response['status'] = 500
+        response['message'] = 'An error occurred during the link save.'
+        response['errors'] = form.errors.get('url', [])
+        return HttpResponseJSON(response)
     
-    return HttpResponseServerError('Invalid request method')
+    return HttpResponseJSON({'status': 500, 'message': 'Invalid request method'})
 
 
 def inactivate(request):
@@ -57,6 +60,6 @@ def listing(request, only_active=None):
             response = list(links.values('id', 'url'))
             return HttpResponseJSON(response)
         
-        return HttpResponseServerError('Owner id not received') 
-    return HttpResponseServerError('Invalid request method')
+        return HttpResponseJSON({'status': 500, 'message': 'Owner id not received'}) 
+    return HttpResponseJSON({'status': 500, 'message': 'Invalid request method'})
 

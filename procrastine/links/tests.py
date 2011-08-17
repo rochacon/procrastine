@@ -42,24 +42,31 @@ class LinksTest(TestCase):
         Test the response on an invalid request method
         """
         r = self.client.get(reverse('links_add'))
-        self.assertEquals(500, r.status_code)
-        self.assertEquals('Invalid request method', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(500, rjson['status'])
+        self.assertEquals('Invalid request method', rjson['message'])
     
-    def test_add_view_invalid_post(self):
+    def test_add_view_empty_post(self):
         """
         Test the response on an empty POST request
         """
         r = self.client.post(reverse('links_add'), {})
-        self.assertEquals(500, r.status_code)
-        self.assertEquals('An error occurred during the link save.', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(500, rjson['status'])
+
+        self.assertEquals('An error occurred during the link save.', rjson['message'])
     
     def test_add_view_invalid_post(self):
         """
         Test the response on an invalid POST request
         """
         r = self.client.post(reverse('links_add'), {'url': 'http://'})
-        self.assertEquals(500, r.status_code)
-        self.assertEquals('An error occurred during the link save.', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(500, rjson['status'])
+        self.assertEquals('An error occurred during the link save.', rjson['message'])
 
     def test_remove_view_get(self):
         """
@@ -118,14 +125,34 @@ class LinksTest(TestCase):
         Teste the list view with an empty/invalid post
         """
         r = self.client.post(reverse('links_list'), {})
-        self.assertEquals(500, r.status_code)
-        self.assertEquals('Owner id not received', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(500, rjson['status'])
+        self.assertEquals('Owner id not received', rjson['message'])
     
     def test_list_view_get(self):
         """
         Test invalid request method for the listing view
         """
         r = self.client.get(reverse('links_list'))
-        self.assertEquals(500, r.status_code)
-        self.assertEquals('Invalid request method', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(500, rjson['status'])
+        self.assertEquals('Invalid request method', rjson['message'])
+
+    def test_api_key_decorator_valid_call(self):
+        """
+        Test an valid API key call
+        """
+        api_key = self.owner.get_profile().key
+        r = self.client.get(reverse('api_links_list', args=[api_key]))
+        self.assertEquals(200, r.status_code)
+
+    def test_api_key_decorator_invalid_call(self):
+        """
+        Test an valid API key call
+        """
+        api_key = 'a' * 40 
+        r = self.client.get(reverse('api_links_list', args=[api_key]))
+        self.assertEquals(404, r.status_code)
 
