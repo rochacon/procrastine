@@ -9,7 +9,9 @@ def add(request):
     Add new link view
     """
     if request.method == 'POST':
-        form = LinkForm(request.POST)
+        post = request.POST.copy()
+        post.update({'is_active': True})
+        form = LinkForm(post)
         if form.is_valid():
             link = form.save()
             response = {}
@@ -52,7 +54,7 @@ def listing(request, only_active=None):
     List a users urls
     """
     if request.method == 'POST':
-        if only_active is None:
+        if not only_active:
             only_active = True
         
         if 'owner' in request.POST:
@@ -61,7 +63,7 @@ def listing(request, only_active=None):
             response['status'] = 200
             response['urls'] = list(links.values('id', 'url'))
             return HttpResponseJSON(response)
-        
+
         return HttpResponseJSON({'status': 500, 'message': 'Owner id not received'}) 
     return HttpResponseJSON({'status': 500, 'message': 'Invalid request method'})
 
