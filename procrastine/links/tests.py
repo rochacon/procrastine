@@ -73,8 +73,10 @@ class LinksTest(TestCase):
         Test invalid request method for the remove view
         """
         r = self.client.get(reverse('links_remove'))
-        self.assertEquals(500, r.status_code)
-        self.assertEquals('Invalid request method', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(500, rjson['status'])
+        self.assertEquals('Invalid request method', rjson['message'])
 
     def test_remove_view_post(self):
         """
@@ -84,7 +86,9 @@ class LinksTest(TestCase):
             'id': self.link.id, 'owner': self.link.owner.id
         })
         self.assertEquals(200, r.status_code)
-        self.assertEquals('Link removed', r.content)
+        rjson = json.loads(r.content)
+        self.assertEquals(200, rjson['status'])
+        self.assertEquals('Link removed', rjson['message'])
 
         link = Link.objects.get(pk=self.link.id)
         self.assertFalse(link.is_active)
@@ -96,8 +100,10 @@ class LinksTest(TestCase):
         r = self.client.post(reverse('links_remove'), {
             'id': 0, 'owner': self.owner.id
         })
-        self.assertEquals(404, r.status_code)
-        self.assertEquals('Link not found', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(404, rjson['status'])
+        self.assertEquals('Link not found', rjson['message'])
 
     def test_remove_view_link_not_found(self):
         """
@@ -106,8 +112,10 @@ class LinksTest(TestCase):
         r = self.client.post(reverse('links_remove'), {
             'id': self.link.id, 'owner': 0 
         })
-        self.assertEquals(404, r.status_code)
-        self.assertEquals('Link not found', r.content)
+        self.assertEquals(200, r.status_code)
+        rjson = json.loads(r.content)
+        self.assertEquals(404, rjson['status'])
+        self.assertEquals('Link not found', rjson['message'])
     
     def test_list_view(self):
         """
@@ -116,9 +124,9 @@ class LinksTest(TestCase):
         r = self.client.post(reverse('links_list'), {'owner': self.owner.id})
         self.assertEquals(200, r.status_code)
         rjson = json.loads(r.content)
-        self.assertEquals(1, len(rjson))
-        self.assertTrue('id' in rjson[0])
-        self.assertTrue('url' in rjson[0])
+        self.assertEquals(1, len(rjson['urls']))
+        self.assertTrue('id' in rjson['urls'][0])
+        self.assertTrue('url' in rjson['urls'][0])
 
     def test_list_view_invalid_post(self):
         """

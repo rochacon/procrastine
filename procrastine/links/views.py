@@ -41,12 +41,12 @@ def inactivate(request):
                 link = Link.objects.get(pk=link_id, owner__pk=owner_id)
                 link.is_active = False
                 link.save()
-                return HttpResponse('Link removed')
+                return HttpResponseJSON({'status': 200, 'message': 'Link removed'})
             
             except Link.DoesNotExist:
-                return HttpResponseNotFound('Link not found')
+                return HttpResponseJSON({'status': 404, 'message': 'Link not found'})
     
-    return HttpResponseServerError('Invalid request method')
+    return HttpResponseJSON({'status': 500, 'message': 'Invalid request method'})
     
 
 def listing(request, only_active=None):
