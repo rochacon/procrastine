@@ -1,14 +1,14 @@
 from django.contrib import admin
 
-from links.models import Link
+from things.models import Thing
 
-class LinkAdmin(admin.ModelAdmin):
+class ThingAdmin(admin.ModelAdmin):
     actions = ['inactive_selected']
-    fields = ('url',)
-    search_fields = ('url',)
+    fields = ('content', 'type')
+    search_fields = ('content', 'type')
 
     def get_actions(self, request):
-        actions = super(LinkAdmin, self).get_actions(request)
+        actions = super(ThingAdmin, self).get_actions(request)
         if not request.user.is_superuser:
             del actions['delete_selected']
         return actions
@@ -18,13 +18,13 @@ class LinkAdmin(admin.ModelAdmin):
     inactive_selected.short_description = u'Delete selected'
 
     def queryset(self, request):
-        qs = super(LinkAdmin, self).queryset(request)
+        qs = super(ThingAdmin, self).queryset(request)
         return qs.filter(owner=request.user, is_active=True)
 
     def save_model(self, request, obj, form, change):
         obj.owner = request.user
         obj.save()
 
-admin.site.register(Link, LinkAdmin)
+admin.site.register(Thing, ThingAdmin)
 
 
