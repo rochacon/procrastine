@@ -66,7 +66,7 @@ class ThingTest(TestCase):
         rjson = json.loads(r.content)
         self.assertEquals(500, rjson['status'])
 
-        self.assertEquals('An error occurred during the save.', rjson['message'])
+        self.assertEquals('An error occurred during the save process.', rjson['message'])
     
     def test_add_view_invalid_post(self):
         """
@@ -76,7 +76,7 @@ class ThingTest(TestCase):
         self.assertEquals(200, r.status_code)
         rjson = json.loads(r.content)
         self.assertEquals(500, rjson['status'])
-        self.assertEquals('An error occurred during the save.', rjson['message'])
+        self.assertEquals('An error occurred during the save process.', rjson['message'])
 
     def test_remove_view_get(self):
         """
@@ -126,6 +126,7 @@ class ThingTest(TestCase):
         self.assertTrue('id' in rjson['things'][0])
         self.assertTrue('content' in rjson['things'][0])
         self.assertTrue('type' in rjson['things'][0])
+        self.assertTrue('url' in rjson['things'][0])
 
     def test_list_view_invalid_post(self):
         """
