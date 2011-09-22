@@ -15,9 +15,9 @@ urlpatterns = patterns('',
     url(r'(?P<api_key>[a-f0-9]{40})/list/$', auth_api_key(things_list), name='api_things_list'),
 
     # Things
-    url('^add/$', things_add, name='things_add'),
-    url('^remove/$', things_remove, name='things_remove'),
-    url('^list/$', things_list, name='things_list'),
+    #url('^add/$', things_add, name='things_add'),
+    #url('^remove/$', things_remove, name='things_remove'),
+    #url('^list/$', things_list, name='things_list'),
     
     # Admin
     url(r'^admin/', include(admin.site.urls)),
