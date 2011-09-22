@@ -14,7 +14,7 @@ class Thing(models.Model):
     is_active = models.BooleanField('Active ?', default=True)
 
     def __unicode__(self):
-        return self.url
+        return self.content
 
     def delete(self):
         self.is_active = False

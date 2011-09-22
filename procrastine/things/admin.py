@@ -5,7 +5,7 @@ from things.models import Thing
 class ThingAdmin(admin.ModelAdmin):
     actions = ['inactive_selected']
     fields = ('content', 'type')
-    search_fields = ('content', 'type')
+    search_fields = ('content',)
 
     def get_actions(self, request):
         actions = super(ThingAdmin, self).get_actions(request)
