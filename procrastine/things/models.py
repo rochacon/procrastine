@@ -12,6 +12,11 @@ class Thing(models.Model):
     content = models.CharField(max_length=510)
     type = models.IntegerField(choices=TYPES, default=3, blank=True)
     is_active = models.BooleanField('Active ?', default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created']
 
     def __unicode__(self):
         return self.content
@@ -21,7 +26,6 @@ class Thing(models.Model):
         self.save()
 
     def get_absolute_url(self):
-        if self.pk:
-            return reverse('things_view', args=[self.pk])
-        return ''
+        return self.content
+        # return reverse('things_view', args=[self.pk])
 

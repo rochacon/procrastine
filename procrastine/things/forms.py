@@ -15,6 +15,9 @@ class ThingForm(forms.ModelForm):
         # Is URL
         if re.match(r'^https?:\/\/', content):
             cleaned_data.update({'type': types['url']})
+        # Image
+        elif re.match(r'(png|jpe?g|gif)$', content):
+            cleaned_data.update({'type': types['image']})
         # Treat as text
         else:
             cleaned_data.update({'type': types['text']})

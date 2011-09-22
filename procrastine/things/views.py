@@ -9,8 +9,7 @@ def add(request):
     Add new thing view
     """
     if request.method == 'POST':
-        post = request.POST.copy()
-        form = ThingForm(post)
+        form = ThingForm(request.POST)
         if form.is_valid():
             thing = form.save()
             response = {}
@@ -19,14 +18,15 @@ def add(request):
             response['thing'] = {
                 'id': thing.id,
                 'content': thing.content,
-                'type': thing.get_type_display()
+                'type': thing.get_type_display(),
+                'url': thing.get_absolute_url()
             }
             return HttpResponseJSON(response)
             
         response = {}
         response['status'] = 500
-        response['message'] = 'An error occurred during the save.'
-        response['errors'] = form.errors.get('url', [])
+        response['message'] = 'An error occurred during the save process.'
+        response['errors'] = form.errors
         return HttpResponseJSON(response)
     
     return HttpResponseJSON({'status': 500, 'message': 'Invalid request method'})
@@ -41,7 +41,7 @@ def inactivate(request):
         owner_id = request.POST.get('owner')
         if thing_id and owner_id:
             try:
-                thing = Thing.objects.get(pk=thing_id, owner__pk=owner_id)
+                thing = Thing.objects.get(pk=thing_id, owner=owner_id)
                 thing.is_active = False
                 thing.save()
                 return HttpResponseJSON({'status': 200, 'message': 'Removed'})
@@ -54,7 +54,7 @@ def inactivate(request):
 
 def listing(request, only_active=None):
     """
-    List a users urls
+    List a users things 
     """
     if request.method == 'POST':
         if not only_active:
@@ -64,7 +64,14 @@ def listing(request, only_active=None):
             things = Thing.objects.filter(owner=request.POST.get('owner'), is_active=only_active)
             response = {}
             response['status'] = 200
-            response['things'] = [{'id': t.id, 'content': t.content, 'type': t.get_type_display()} for t in things]
+            response['things'] = []
+            for t in things:
+                response['things'].append({
+                    'id': t.id,
+                    'content': t.content,
+                    'type': t.get_type_display(),
+                    'url': t.get_absolute_url()
+                })
             return HttpResponseJSON(response)
 
         return HttpResponseJSON({'status': 500, 'message': 'Owner id not received'}) 
