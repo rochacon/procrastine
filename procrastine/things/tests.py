@@ -46,6 +46,8 @@ class ThingTest(TestCase):
         self.assertEquals(2, rjson['thing']['id'])
         self.assertEquals(self.content['url'], rjson['thing']['content'])
         self.assertEquals('url', rjson['thing']['type'])
+        thing = Thing.objects.get(pk=rjson['thing']['id'])
+        self.assertEquals(True, thing.is_active)
 
     def test_add_view_get(self):
         """

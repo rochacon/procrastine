@@ -7,6 +7,7 @@ from things.models import Thing
 class ThingForm(forms.ModelForm):
     class Meta:
         model = Thing
+        exclude = ['is_active']
 
     def clean(self):
         cleaned_data = super(ThingForm, self).clean()
