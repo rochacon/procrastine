@@ -2,7 +2,7 @@ from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt 
 
 from core.http import HttpResponseJSON
-from links.models import User 
+from things.models import User 
 
 @csrf_exempt
 def auth_api_key(view_func):
