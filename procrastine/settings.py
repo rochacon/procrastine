@@ -39,7 +39,7 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = False 
+USE_I18N = False
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
@@ -115,11 +115,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django_nose',
+    'social_auth',
     'core',
     'accounts',
     'things',
 )
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+#TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -144,6 +145,48 @@ LOGGING = {
     }
 }
 
+# Authentication Backends
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Authentication urls
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/me/'
+LOGIN_ERROR_URL = '/login/error/'
+LOGOUT_URL = '/logout/'
+
+# Social Auth
+SOCIAL_AUTH_ENABLED_BACKENDS = ('twitter', 'google-oauth', 'facebook')
+# SOCIALAUTH_LOGIN_REDIRECT_URL = ''
+# SOCIAL_AUTH_NEW_USER_REDIRECT_URL = ''
+# SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL = ''
+# SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = ''
+# SOCIAL_AUTH_ERROR_KEY = 'social_errors'
+# SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
+# SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
+#
+SOCIAL_AUTH_EXPIRATION = 'expires'
+SOCIAL_AUTH_ASSOCIATE_BY_MAIL = True
+
 # User profile
 AUTH_PROFILE_MODULE = 'accounts.Profile'
 
+# Template context procressors
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+    'social_auth.context_processors.social_auth_by_type_backends',
+)
+
+try:
+    from procrastine.local_settings import *
+except ImportError:
+    pass

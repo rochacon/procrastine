@@ -1,1 +1,31 @@
 {% extends "base.html" %}
+
+{% block body %}
+    <h2>Login with</h2>
+    <a href="{% url socialauth_begin 'twitter' %}" class="twitter">Twitter</a>
+    <br>
+    <a href="{% url socialauth_begin 'facebook' %}" class="facebook">Facebook</a>
+    <br>
+    <a href="{% url socialauth_begin 'google' %}" class="google">Google</a>
+    <br>
+{% endblock %}
+
+{% block css_list %}
+    <style>
+        .twitter {
+            background: url('/static/img/twitter_logo.png') no-repeat;
+            width: 200px;
+            height: 100px;
+        }
+        .facebook {
+            background: url('/static/img/twitter_logo.png') no-repeat;
+            width: 200px;
+            height: 100px;
+        }
+        .google {
+            background: url('/static/img/twitter_logo.png') no-repeat;
+            width: 200px;
+            height: 100px;
+        }
+    </style>
+{% endblock %}

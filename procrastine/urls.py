@@ -9,6 +9,9 @@ from things.views import inactivate as things_remove
 from things.views import listing as things_list
 
 urlpatterns = patterns('',
+    # Index
+    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+
     # API
     url(r'(?P<api_key>[a-f0-9]{40})/add/$', auth_api_key(things_add), name='api_things_add'),
     url(r'(?P<api_key>[a-f0-9]{40})/remove/$', auth_api_key(things_remove), name='api_things_remove'),
@@ -19,10 +22,9 @@ urlpatterns = patterns('',
     url('^remove/$', things_remove, name='things_remove'),
     url('^list/$', things_list, name='things_list'),
     
+    # Accounts
+    url(r'^accounts/', include('accounts.urls')),
+
     # Admin
     url(r'^admin/', include(admin.site.urls)),
-    
-    # Index
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'), 
 )
-

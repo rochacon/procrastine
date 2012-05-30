@@ -3,3 +3,4 @@
 *.pyc
 *.pyo
 procrastine.db
+procrastine/local_settings.py

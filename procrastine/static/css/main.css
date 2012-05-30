@@ -14,15 +14,31 @@ body {
     text-align: center;
 }
 
-a, a:visited {
+footer a, a:visited {
     color: lime;
     text-decoration: none;
 }
-a:hover {
+footer a:hover {
     text-decoration: underline;
 }
 
-h1 {
+header {
     margin-top: 50px;
+    background: url('/static/img/logo128.png') no-repeat;
+    text-align: justify;
+    height: 128px;
+    padding-left: 128px;
+    padding-top: 80px;
+}
+
+header h1 {
+}
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    margin-left: 340px;
+    width: 20em;
+    padding-bottom: 1em;
 }
 
